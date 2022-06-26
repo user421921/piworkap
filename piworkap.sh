@@ -1,16 +1,25 @@
 #!/bin/bash
 sudo apt-get update -y
 sudo apt-get upgrade -y
+echo "-----Finished Updating!-----"
 sudo apt-get install hostapd bridge-utils dnsmasq -y
+echo "-----Installed Packages!-----"
+echo "-----Stoping Hostapd and Dnsmasq...-----"
 sudo systemctl stop hostapd
 sudo systemctl stop dnsmasq
+echo "-----Stoped!-----"
+echo "-------------------------------------------------"
+echo "-----copy the following into the nano window-----:"
 echo "interface wlan0"
 echo "static ip_address=192.168.0.10/24"
 echo "denyinterfaces eth0"
 echo "denyinterfaces wlan0"
 read -n1 -r -p "Press any key to continue..." key
 sudo nano /etc/dhcpcd.conf
+echo "-----Moving OG Dnsmasq to backup-----"
 sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
+echo "-----Moved!-----"
+echo "-----echoing extra lines to dnsmasq-----"
 sudo echo "interface=wlan0" > /etc/dnsmasq.conf
 sudo echo "dhcp-range=192.168.9.11,192.168.9.30,255.255.255.0,24h" >> /etc/dnsmasq.conf
 
